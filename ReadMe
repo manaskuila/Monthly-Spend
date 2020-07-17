@@ -1,0 +1,40 @@
+CREATE DATABASE home DEFAULT CHARACTER SET utf8 ;
+
+GRANT ALL ON home.* TO 'fred'@'localhost' IDENTIFIED BY 'zap';
+
+GRANT ALL ON home.* TO 'fred'@'127.0.0.1' IDENTIFIED BY 'zap';
+
+
+CREATE TABLE users (
+  user_id INTEGER NOT NULL AUTO_INCREMENT,
+  name VARCHAR(128),
+  email VARCHAR(128),
+  mobile VARCHAR(128),
+  password VARCHAR(128),
+  PRIMARY KEY(user_id)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE users ADD INDEX(email);
+ALTER TABLE users ADD INDEX(password);
+
+  
+  
+CREATE TABLE spend (
+  spend_id INTEGER NOT NULL AUTO_INCREMENT,
+  user_id INTEGER NOT NULL,
+  name TEXT,
+  spend_type TEXT,
+  amount	INTEGER,
+  dat_txn	Date,
+  PRIMARY KEY(profile_id),
+  CONSTRAINT profile_ibfk_2
+  FOREIGN KEY (user_id)
+  REFERENCES users (user_id)
+  ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+SELECT monthname(dat_txn) FROM `spend` WHERE 1
+
+
+SELECT monthname(dat_txn),spend_type,sum(amount) FROM spend group by dat_txn,spend_type,amount;
